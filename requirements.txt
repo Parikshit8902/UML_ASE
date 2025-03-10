@@ -1,0 +1,25 @@
+Hello!
+Here is a list of things you need to install before running this webapp in your system.
+
+1. pip install python-multipart
+2. pip install uvicorn
+3. pip install ollama . Also you need to install ollama from their website.
+4. ollama pull mistral
+
+After that, in app.py, there is a code snippet which mentions the path to the static_dir and drawio_dir (line no. 16 and 17 in app.py). After you extract this zip file or clone it from the git repository into your system, make sure that you provide the correct path of '/static' (where your index.html is located inside) and '/drawio-26.1.0' directories.
+
+Also, currently I have Mistral model installed on my system. We can figure out later which model to use. Till then, if you wish to use the same model, you can install it.
+
+
+Steps to run the web app:
+
+1. Run app.py
+2. Click on the commented code snippet #127.0.0.1:8000 or just type this in your web browser.
+3. Now you should see draw.io running on your web browser
+4. After creating a diagram, export it as xml file.
+5. Provide this xml file as input.
+6. Since the model is not trained yet, it will take approx 5 minutes to generate output. The output will be displayed on the screen. 
+Disclaimer: Laptop heats a lot when running this script.
+
+Let me know if you face any other issues.
+

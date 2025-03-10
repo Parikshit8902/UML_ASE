@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Diagram Editor</title>
+</head>
+<body>
+    <h1>UML Diagram Editor</h1>
+    
+    <!-- Embed Draw.io -->
+    <iframe id="drawioFrame" src="/drawio-26.1.0/drawio-26.1.0/src/main/webapp/index.html" width="100%" height="600px"></iframe>
+
+    <hr>
+
+    <h2>Upload XML File for AI Feedback</h2>
+    
+    <!-- XML File Input -->
+    <label for="xmlFileInput">Choose an XML file:</label>
+    <input type="file" id="xmlFileInput" accept=".xml">
+    <br><br>
+    
+    <button id="uploadFeedbackButton">Get AI Feedback from XML</button>
+    <button id="clearButton">Clear</button>
+
+    <h3 id="loadingIndicator" style="display:none; color:blue;">Processing... Please wait.</h3>
+
+    <h2>AI Feedback:</h2>
+    <div id="feedbackResult" style="border: 1px solid black; padding: 10px; min-height: 50px;"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const xmlFileInput = document.getElementById("xmlFileInput");
+            const uploadFeedbackButton = document.getElementById("uploadFeedbackButton");
+            const clearButton = document.getElementById("clearButton");
+            const loadingIndicator = document.getElementById("loadingIndicator");
+            const feedbackResult = document.getElementById("feedbackResult");
+
+            uploadFeedbackButton.addEventListener("click", async function () {
+                const file = xmlFileInput.files[0];
+
+                if (!file) {
+                    feedbackResult.innerHTML = "<p style='color:red;'>❌ Please select an XML file first.</p>";
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                    loadingIndicator.style.display = "block"; // Show loading message
+                    feedbackResult.innerHTML = ""; // Clear previous feedback
+
+                    const response = await fetch("/upload_xml", {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+                    loadingIndicator.style.display = "none"; // Hide loading message
+
+                    if (response.ok) {
+                        // ✅ FIXED: Handle AI response safely
+                        const feedbackText = data.feedback || "No response from AI.";
+                        feedbackResult.innerHTML = `<p>✅ ${feedbackText.replace(/\n/g, "<br>")}</p>`;
+                    } else {
+                        feedbackResult.innerHTML = `<p style='color:red;'>❌ Error: ${data.error || "Something went wrong."}</p>`;
+                    }
+                } 
+                catch (error) {
+                    loadingIndicator.style.display = "none";
+                    console.error("❌ Error sending file:", error);
+                    feedbackResult.innerHTML = "<p style='color:red;'>❌ Failed to send the file. Check the console for details.</p>";
+                }
+            });
+
+            // Clear input and feedback
+            clearButton.addEventListener("click", function () {
+                xmlFileInput.value = "";
+                feedbackResult.innerHTML = "";
+            });
+        });
+    </script> 
+</body>
+</html>
