@@ -130,7 +130,7 @@ Provide a structured response as follows:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app:app", host="127.0.0.1", port=5500, reload=True)
 
 
-#http://127.0.0.1:8000
+#http://127.0.0.1:5500
