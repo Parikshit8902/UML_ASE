@@ -3,7 +3,7 @@
 import requests
 
 # Groq API setup
-GROQ_API_KEY = "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"
+GROQ_API_KEY = "api_key"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
